@@ -60,10 +60,11 @@ public class CanvasModifier : MonoBehaviour, IInputClickHandler
         {
             numberOfChange += 1;
             //calculate the time taken to click based on the start recording time
-            int totalTimeToReact = ( DateTime.Now - startRecordingTime).Milliseconds;
-            Debug.Log("Total time to react: "+totalTimeToReact);
+            int totalTimeToReact = (DateTime.Now - startRecordingTime).Milliseconds;
+            Debug.Log("Total time to react: " + totalTimeToReact);
             //turn  off the color
-            canvas.transform.Find("RawImage").GetComponent<RawImage>().enabled = false;
+            canvas.transform.Find("RawImage 1").GetComponent<RawImage>().enabled = false;
+            canvas.transform.Find("RawImage 2").GetComponent<RawImage>().enabled = false;
             //change the state
             colorChanged = false;
 
@@ -76,8 +77,16 @@ public class CanvasModifier : MonoBehaviour, IInputClickHandler
             }
 
         }
-
-        Debug.Log("Click !");
+        else
+        {
+            if (startedRecording == true)
+            {
+                String s = "reacted while no circle was displayed";
+                //add the time data to the myrecording object frames holder
+                myRecordingObject.frames.Add(s);
+            }
+            Debug.Log("Click! but color not active");
+        }
         
     }
 
@@ -90,8 +99,9 @@ public class CanvasModifier : MonoBehaviour, IInputClickHandler
     /// </summary>
     private void ChangeCanvasRandom()
     {
-       //change the color of the canvas and update the state
-        canvas.transform.Find("RawImage").GetComponent<RawImage>().enabled = true;
+        int CircleNumber = rand.Next(1, 3);
+        //make the circle visible and update the state
+        canvas.transform.Find("RawImage " + CircleNumber).GetComponent<RawImage>().enabled = true;
         colorChanged = true;
         Debug.Log("Raw Image changed");
         //register the current time when the color is changed.

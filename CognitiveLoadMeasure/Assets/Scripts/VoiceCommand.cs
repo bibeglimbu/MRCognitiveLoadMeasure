@@ -13,6 +13,7 @@ public class VoiceCommand : MonoBehaviour {
         keywords.Add("Start Recording", () =>
         {
             GameObject.Find("Managers").GetComponent<LearningHubControl>().sendMessage("<START RECORDING>");
+            GameObject.Find("Managers").GetComponent<VideoAnnotation>().StartRecordingVideo();
             GameObject.Find("Canvas").GetComponent<CanvasModifier>().StartTask();
             Debug.Log("Started Recording");
 
@@ -21,6 +22,7 @@ public class VoiceCommand : MonoBehaviour {
         keywords.Add("Stop Recording", () =>
         {
             GameObject.Find("Managers").GetComponent<LearningHubControl>().sendMessage("<STOP RECORDING>");
+            GameObject.Find("Managers").GetComponent<VideoAnnotation>().StopRecordingVideo();
             GameObject.Find("Canvas").GetComponent<CanvasModifier>().StopTask();
             Debug.Log("Stopped Recording");
         });
