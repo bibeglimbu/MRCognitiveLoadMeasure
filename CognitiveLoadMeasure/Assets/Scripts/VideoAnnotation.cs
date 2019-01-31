@@ -32,7 +32,7 @@ public class VideoAnnotation: MonoBehaviour
     public void StartRecordingVideo()
     {
         isRecording = true;
-        VideoCapture.CreateAsync(false, OnVideoCaptureCreated);
+        VideoCapture.CreateAsync(true, OnVideoCaptureCreated);
     }
 
     /// <summary>

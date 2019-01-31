@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Windows.Speech;
 
 public class VoiceCommand : MonoBehaviour {
@@ -25,6 +26,13 @@ public class VoiceCommand : MonoBehaviour {
             GameObject.Find("Managers").GetComponent<VideoAnnotation>().StopRecordingVideo();
             GameObject.Find("Canvas").GetComponent<CanvasModifier>().StopTask();
             Debug.Log("Stopped Recording");
+        });
+
+        keywords.Add("Start Applications", () =>
+        {
+            GameObject.Find("Managers").GetComponent<LearningHubControl>().sendMessage("<START APPLICATIONS>");
+            Debug.Log("Started Applications");
+            GameObject.Find("Canvas").transform.Find("Text").GetComponent<Text>().text = "Say Start Recording";
         });
 
         // Tell the KeywordRecognizer about our keywords.

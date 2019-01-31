@@ -10,6 +10,7 @@ using System.IO;
 
 public class CanvasModifier : MonoBehaviour, IInputClickHandler
 {
+    [Tooltip("attach your canvas from the scene")]
     public Canvas canvas;
 
     /// <summary>
@@ -26,6 +27,14 @@ public class CanvasModifier : MonoBehaviour, IInputClickHandler
     /// Random number generator for generating numbers between 
     /// </summary>
     System.Random rand = new System.Random();
+
+    void Awake()
+    {
+        //turn off both the raw images when application starts. 
+        //donot turn it off in the scene editor as this will not allow them to be manually activated
+        canvas.transform.Find("RawImage 1").GetComponent<RawImage>().enabled = false;
+        canvas.transform.Find("RawImage 2").GetComponent<RawImage>().enabled = false;
+    }
 
     // Use this for initialization
     void Start () {
@@ -55,18 +64,18 @@ public class CanvasModifier : MonoBehaviour, IInputClickHandler
     /// </summary>
     private void ClickerClicked()
     {
-        //if the color has changed
-        if (colorChanged == true)
+        //if the rawimage has changed
+        if (RawImageChanged == true)
         {
             numberOfChange += 1;
             //calculate the time taken to click based on the start recording time
             int totalTimeToReact = (DateTime.Now - startRecordingTime).Milliseconds;
             Debug.Log("Total time to react: " + totalTimeToReact);
-            //turn  off the color
+            //turn  off the rawimages
             canvas.transform.Find("RawImage 1").GetComponent<RawImage>().enabled = false;
             canvas.transform.Find("RawImage 2").GetComponent<RawImage>().enabled = false;
             //change the state
-            colorChanged = false;
+            RawImageChanged = false;
 
             //if the student is recording data
             if (startedRecording == true)
@@ -91,18 +100,20 @@ public class CanvasModifier : MonoBehaviour, IInputClickHandler
     }
 
     /// <summary>
-    /// defines if the color was changed until the next iteration is called
+    /// defines if the image was changed until the next iteration is called
     /// </summary>
-    private bool colorChanged = false;
+    private bool RawImageChanged = false;
     /// <summary>
-    /// Changes the canvas color to await the users interaction
+    /// Changes the canvas raw image  to await the users interaction
     /// </summary>
     private void ChangeCanvasRandom()
     {
+        canvas.transform.Find("RawImage 1").GetComponent<RawImage>().enabled = false;
+        canvas.transform.Find("RawImage 2").GetComponent<RawImage>().enabled = false;
         int CircleNumber = rand.Next(1, 3);
         //make the circle visible and update the state
         canvas.transform.Find("RawImage " + CircleNumber).GetComponent<RawImage>().enabled = true;
-        colorChanged = true;
+        RawImageChanged = true;
         Debug.Log("Raw Image changed");
         //register the current time when the color is changed.
         startRecordingTime = DateTime.Now;
@@ -144,6 +155,7 @@ public class CanvasModifier : MonoBehaviour, IInputClickHandler
         Invoke("ChangeCanvasRandom", fortimerinterval);
         //changed the started recording to true
         startedRecording = true;
+        canvas.transform.Find("Text").GetComponent<Text>().enabled = false;
     }
 
     /// <summary>
